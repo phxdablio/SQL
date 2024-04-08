@@ -1,0 +1,189 @@
+CREATE TABLE `projeto_2`.`turma` (
+  `id_turma` INT NOT NULL AUTO_INCREMENT,
+  `disciplina_id` INT NULL,
+  `prof_id` INT NULL,
+  `campus_id` INT NULL,
+  `turno_id` INT NULL,
+  `observação` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_turma`));
+
+
+CREATE TABLE `projeto_2`.`disciplina` (
+  `disciplina_id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL,
+  `codigo` VARCHAR(45) NULL,
+  `carga_horaria` INT NULL,
+  PRIMARY KEY (`disciplina_id`));
+  
+  
+  CREATE TABLE `projeto_2`.`turno` (
+  `turno_id` INT NOT NULL AUTO_INCREMENT,
+  `descrição` VARCHAR(45) NULL,
+  PRIMARY KEY (`turno_id`));
+  
+  CREATE TABLE `projeto_2`.`new_table` (
+  `prof_id` INT NOT NULL AUTO_INCREMENT,
+  `cidade_id` INT NULL,
+  `titulação_id` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `matricula` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`prof_id`));
+
+
+CREATE TABLE `projeto_2`.`campus` (
+  `campus_id` INT NOT NULL AUTO_INCREMENT,
+  `cidade_id` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `endereço` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`campus_id`));
+  
+  CREATE TABLE `projeto_2`.`titulação` (
+  `titulação_id` INT NOT NULL AUTO_INCREMENT,
+  `descrição` VARCHAR(45) NULL,
+  PRIMARY KEY (`titulação_id`));
+
+
+CREATE TABLE `projeto_2`.`cidade` (
+  `cidade_id` INT NOT NULL AUTO_INCREMENT,
+  `uf_id` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `população` INT NULL,
+  PRIMARY KEY (`cidade_id`));
+
+
+CREATE TABLE `projeto_2`.`uf` (
+  `uf_id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `sigla` VARCHAR(45) NULL,
+  PRIMARY KEY (`uf_id`));
+  
+  CREATE TABLE `projeto_2`.`estudante` (
+  `estudante_id` INT NOT NULL AUTO_INCREMENT,
+  `cidade_id` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `endereço` VARCHAR(45) NULL,
+  PRIMARY KEY (`estudante_id`));
+  
+  CREATE TABLE `projeto_2`.`turma_estudante` (
+  `turma_estudante_id` INT NOT NULL AUTO_INCREMENT,
+  `id_turma` INT NULL,
+  `estudante_id` INT NULL,
+  `sta_matricula` DATE NULL,
+  PRIMARY KEY (`turma_estudante_id`));
+  
+  
+  INNER JOIN -
+SELECT nome 
+FROM professor
+WHERE cidade_id in (SELECT cidade_id FROM cidade WHERE cidade_id = 3) 
+
+(Deu certo!!!)
+1)
+SELECT * FROM criacao_populacao.professor AS P 
+INNER JOIN cidade AS C
+ON P.idcidade = C.idcidade 
+WHERE C.idcidade = 2
+
+
+
+(Deu certo!!!)
+2)
+SELECT * FROM turma AS turma 
+INNER JOIN campus AS cp 
+ON turma.campus_id = cp.campus_id 
+WHERE cp.campus_id  = 3
+
+
+2)SELECT * FROM criacao_populacao.disciplina AS disciplina
+INNER JOIN campus AS CP
+ON disciplina.idcampus = CP.idcampus 
+WHERE CP.idcampus = 1
+
+
+
+(Deu certo!!!)
+3)
+SELECT * FROM criacao_populacao.turma_estudante AS Est
+INNER JOIN turma AS T
+ON Est.idturma = T.idturma
+WHERE T.idturma = 3
+
+
+(Deu certo!!!)
+4)
+SELECT * FROM turma AS turma
+INNER JOIN campus AS campus 
+ON turma.campus_id = campus.campus_id
+WHERE campus.campus_id = 3
+AND turma.turno_id = 3
+
+
+(Deu certo!!!)
+4)
+SELECT * FROM criacao_populacao.turma AS turma
+INNER JOIN campus AS campus 
+ON turma.idcampus = campus.idcampus
+WHERE campus.idcampus = 2
+AND turma.idturno = 2
+
+
+5)
+SELECT * FROM criacao_populacao.turma_estudante AS Est
+INNER JOIN turma AS turma
+ON Est.idturma = turma.idturma
+WHERE turma.idturma = 0
+
+
+(Deu certo!!!)
+6)
+SELECT * FROM criacao_populacao.turma AS turma
+INNER JOIN turma_estudante AS Te
+ON Te.idturma = turma.idturma
+WHERE turma.idturma = 5
+
+
+
+
+7)
++/-
+SELECT * FROM criacao_populacao.campus AS campus
+INNER JOIN turma AS turma
+ON turma.idcampus = campus.idcampus
+WHERE campus.idcampus = 2
+
+
+SELECT * FROM criacao_populacao.campus AS campus
+JOIN turma AS turma
+JOIN turno AS turno 
+ON turma.idcampus = campus.idcampus
+WHERE campus.idcampus = 2
+AND turno.idcampus = 3
+
+
+(Deu certo!!!)
+8)
+SELECT * FROM criacao_populacao.cidade AS cidade
+JOIN campus AS campus
+ON campus.idcidade = cidade.idcidade
+
+
+9)
+
+
+
+
+10)
+SELECT idestudante 
+FROM turma_estudante
+FULL OUTER JOIN turma
+ON  turma_estudante.idestudante = turma.idestudante
+
+
+
+
+
+
+

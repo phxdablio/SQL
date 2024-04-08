@@ -1,0 +1,242 @@
+CREATE SCHEMA `03_dump` ;
+
+CREATE TABLE `03_dump`.`farmácia` (
+  `idfarmácia` INT NOT NULL AUTO_INCREMENT,
+  `idcidade` INT NULL,
+  `idremédios` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `endereço` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`idfarmácia`));
+
+CREATE TABLE `03_dump`.`remédios` (
+  `idremédios` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL,
+  `descrição` VARCHAR(45) NULL,
+  `código` VARCHAR(45) NULL,
+  `quantidade` INT NULL,
+  PRIMARY KEY (`idremédios`));
+  
+  CREATE TABLE `03_dump`.`farmaceutico` (
+  `idfarmaceutico` INT NOT NULL AUTO_INCREMENT,
+  `idcidade` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`idfarmaceutico`));
+  
+  CREATE TABLE `03_dump`.`cliente` (
+  `idcliente` INT NOT NULL AUTO_INCREMENT,
+  `idcidade` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL,
+  `clientecol` VARCHAR(45) NULL,
+  PRIMARY KEY (`idcliente`));
+  
+  CREATE TABLE `03_dump`.`pedido` (
+  `idpedido` INT NOT NULL AUTO_INCREMENT,
+  `idremédio` INT NULL,
+  `idfarmaceutico` INT NULL,
+  `idfarmacia` INT NULL,
+  `idmotoboy` INT NULL,
+  `descrição` VARCHAR(45) NULL,
+  PRIMARY KEY (`idpedido`));
+  
+  CREATE TABLE `03_dump`.`cidade` (
+  `idcidade` INT NOT NULL AUTO_INCREMENT,
+  `iduf` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `população` INT NULL,
+  PRIMARY KEY (`idcidade`));
+  
+  CREATE TABLE `03_dump`.`uf` (
+  `iduf` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL,
+  `sigla` VARCHAR(45) NULL,
+  PRIMARY KEY (`iduf`));
+  
+    CREATE TABLE `03_dump`.`motoboy` (
+  `idmotoboy` INT NOT NULL AUTO_INCREMENT,
+  `idpedido` INT NULL,
+  `idcliente` INT NULL,
+  `nome` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL,
+  PRIMARY KEY (`idmotoboy`));
+
+
+ALTER TABLE `03_dump`.`cidade` 
+ADD INDEX `iduf_idx` (`iduf` ASC);
+
+ALTER TABLE `03_dump`.`cidade` 
+ADD CONSTRAINT `iduf`
+  FOREIGN KEY (`iduf`)
+  REFERENCES `03_dump`.`uf` (`iduf`);
+  
+  ALTER TABLE `03_dump`.`cliente` 
+ADD INDEX `idcidade_idx` (`idcidade` ASC) 
+;
+ALTER TABLE `03_dump`.`cliente` 
+ADD CONSTRAINT `idcidade`
+  FOREIGN KEY (`idcidade`)
+  REFERENCES `03_dump`.`cidade` (`idcidade`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `03_dump`.`farmaceutico` 
+ADD INDEX `cidade_id_idx` (`idcidade` ASC) 
+;
+ALTER TABLE `03_dump`.`farmaceutico` 
+ADD CONSTRAINT `cidade_id`
+  FOREIGN KEY (`idcidade`)
+  REFERENCES `03_dump`.`cidade` (`idcidade`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `03_dump`.`farmácia` 
+ADD INDEX `fk_cidade_id_idx` (`idcidade` ASC) 
+;
+ALTER TABLE `03_dump`.`farmácia` 
+ADD CONSTRAINT `fk_cidade_id`
+  FOREIGN KEY (`idcidade`)
+  REFERENCES `03_dump`.`cidade` (`idcidade`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+ALTER TABLE `03_dump`.`farmácia` 
+ADD INDEX `idremedios_idx` (`idremédios` ASC) 
+;
+ALTER TABLE `03_dump`.`farmácia` 
+ADD CONSTRAINT `idremedios`
+  FOREIGN KEY (`idremédios`)
+  REFERENCES `03_dump`.`remédios` (`idremédios`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;  
+  
+   ALTER TABLE `03_dump`.`motoboy` 
+ADD INDEX `idpedido_idx` (`idpedido` ASC) 
+;
+ALTER TABLE `03_dump`.`motoboy` 
+ADD CONSTRAINT `idpedido`
+  FOREIGN KEY (`idpedido`)
+  REFERENCES `03_dump`.`pedido` (`idpedido`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+    ALTER TABLE `03_dump`.`motoboy` 
+ADD INDEX `idcliente_idx` (`idcliente` ASC) 
+;
+ALTER TABLE `03_dump`.`motoboy` 
+ADD CONSTRAINT `idcliente`
+  FOREIGN KEY (`idcliente`)
+  REFERENCES `03_dump`.`cliente` (`idcliente`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `03_dump`.`pedido` 
+ADD INDEX `idremedio_idx` (`idremédio` ASC) 
+;
+ALTER TABLE `03_dump`.`pedido` 
+ADD CONSTRAINT `idremedio`
+  FOREIGN KEY (`idremédio`)
+  REFERENCES `03_dump`.`remédios` (`idremédios`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `03_dump`.`pedido` 
+ADD INDEX `idfarmaceutico_idx` (`idfarmaceutico` ASC) 
+;
+ALTER TABLE `03_dump`.`pedido` 
+ADD CONSTRAINT `idfarmaceutico`
+  FOREIGN KEY (`idfarmaceutico`)
+  REFERENCES `03_dump`.`farmaceutico` (`idfarmaceutico`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+ ALTER TABLE `03_dump`.`pedido` 
+ADD INDEX `idfarmacia_idx` (`idfarmacia` ASC) 
+;
+ALTER TABLE `03_dump`.`pedido` 
+ADD CONSTRAINT `idfarmacia`
+  FOREIGN KEY (`idfarmacia`)
+  REFERENCES `03_dump`.`farmácia` (`idfarmácia`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `03_dump`.`pedido` 
+ADD INDEX `idmotoboy_idx` (`idmotoboy` ASC) 
+;
+ALTER TABLE `03_dump`.`pedido` 
+ADD CONSTRAINT `idmotoboy`
+  FOREIGN KEY (`idmotoboy`)
+  REFERENCES `03_dump`.`motoboy` (`idmotoboy`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+  INSERT INTO `03_dump`.`uf` (`iduf`, `nome`, `sigla`) VALUES ('1', 'distrito federal', 'DF');
+INSERT INTO `03_dump`.`uf` (`iduf`, `nome`, `sigla`) VALUES ('2', 'Goias', 'GO');
+INSERT INTO `03_dump`.`uf` (`iduf`, `nome`, `sigla`) VALUES ('3', 'Minas Gerais', 'MG');
+INSERT INTO `03_dump`.`uf` (`iduf`, `nome`, `sigla`) VALUES ('4', 'Bahia', 'BA');
+INSERT INTO `03_dump`.`uf` (`iduf`, `nome`, `sigla`) VALUES ('5', 'Tocantins', 'TO');
+
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('1', 'dipirona', 'dor e febre', '01', '74');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('2', 'tylenol', 'dor', '02', '70');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('3', 'doril', 'enxaqueca', '03', '40');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('4', 'glibenclamida', 'diabetes', '04', '38');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('5', 'Eno', 'dor na barriga', '05', '54');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('6', 'brometo de iprtrópio', 'diabetes', '06', '25');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('7', 'alendronato de sódio', 'osteoporose', '07', '15');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('8', 'dramin', 'enjoo, tontura', '08', '46');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('9', 'dorflex', 'dor', '09', '32');
+INSERT INTO `03_dump`.`remédios` (`idremédios`, `nome`, `descrição`, `código`, `quantidade`) VALUES ('10', 'Glifage', 'diabtes', '10', '67');
+
+
+INSERT INTO `03_dump`.`cidade` (`idcidade`, `iduf`, `nome`, `população`) VALUES ('1', '3', 'ouro preto', '75.000');
+INSERT INTO `03_dump`.`cidade` (`idcidade`, `iduf`, `nome`, `população`) VALUES ('2', '2', 'anápolis', '390.000');
+INSERT INTO `03_dump`.`cidade` (`idcidade`, `iduf`, `nome`, `população`) VALUES ('3', '1', 'gama', '130.000');
+INSERT INTO `03_dump`.`cidade` (`idcidade`, `iduf`, `nome`, `população`) VALUES ('4', '4', 'ilhéus', '160.000');
+INSERT INTO `03_dump`.`cidade` (`idcidade`, `iduf`, `nome`, `população`) VALUES ('5', '1', 'taguatinga', '220.000');
+
+
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('1', '5', 'joana', 'joana@gmail.com', '18293271');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('2', '1', 'joao', 'joao@gamil.com', '18201927');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('3', '3', 'helio', 'helio@gmail.com', '28290382');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('4', '4', 'giovanna', 'giovanna@gamil.com', '17329172');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('5', '2', 'marcos', 'marcos@gmail.com', '17291827');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('6', '1', 'fernando', 'fernando@gamil.com', '28197193');
+INSERT INTO `03_dump`.`cliente` (`idcliente`, `idcidade`, `nome`, `email`, `telefone`) VALUES ('7', '5', 'carlos', 'carlos@gamil.com', '18291839');
+
+
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('1', '2', 'josé', '19271829', 'josé@gamil.com');
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('2', '3', 'barbara', '18291728', 'barbara@gmail.com');
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('3', '5', 'felipe', '17829172', 'felipe@gamil.com');
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('4', '1', 'carma', '26718161', 'carla@gamil.com');
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('5', '2', 'gabriel', '17281928', 'gabriel@gmail.com');
+INSERT INTO `03_dump`.`farmaceutico` (`idfarmaceutico`, `idcidade`, `nome`, `telefone`, `email`) VALUES ('6', '4', 'alexandre', '17819171', 'alexandre@gmail.com');
+
+
+INSERT INTO `03_dump`.`farmácia` (`idfarmácia`, `idcidade`, `idremédios`, `nome`, `endereço`, `telefone`, `email`) VALUES ('1', '3', '1', 'drogazil', 'setor norte 37 qd 4', '37282838', 'dragazil@gmail.com');
+INSERT INTO `03_dump`.`farmácia` (`idfarmácia`, `idcidade`, `idremédios`, `nome`, `endereço`, `telefone`, `email`) VALUES ('2', '4', '2', 'santa marta', 'setor sul 3 qd 5', '32462838', 'santamarta@gmail.com');
+INSERT INTO `03_dump`.`farmácia` (`idfarmácia`, `idcidade`, `idremédios`, `nome`, `endereço`, `telefone`, `email`) VALUES ('3', '3', '6', 'santino', 'setor norte 7 qd 9', '37230981', 'santino@gmail.com');
+INSERT INTO `03_dump`.`farmácia` (`idfarmácia`, `idcidade`, `idremédios`, `nome`, `endereço`, `telefone`, `email`) VALUES ('4', '1', '5', 'remds', 'qd 4 setor lesta', '91829727', 'remedsl@gmail.com');
+INSERT INTO `03_dump`.`farmácia` (`idfarmácia`, `idcidade`, `idremédios`, `nome`, `endereço`, `telefone`, `email`) VALUES ('5', '2', '8', 'carmem ', 'qd 4 setor oeste', '78643689', 'carmem@gamil.com');
+
+
+INSERT INTO `03_dump`.`pedido` (`idpedido`, `idremédio`, `idfarmaceutico`, `idfarmacia`, `descrição`) VALUES ('1', '5', '2', '4', 'setor leste qd 3 casa 45');
+INSERT INTO `03_dump`.`pedido` (`idpedido`, `idremédio`, `idfarmaceutico`, `idfarmacia`, `descrição`) VALUES ('2', '8', '1', '5', 'setor norte qd 8 casa 9');
+INSERT INTO `03_dump`.`pedido` (`idpedido`, `idremédio`, `idfarmaceutico`, `idfarmacia`, `descrição`) VALUES ('3', '1', '5', '1', 'setor leste qd 6 casa 5');
+INSERT INTO `03_dump`.`pedido` (`idpedido`, `idremédio`, `idfarmaceutico`, `idfarmacia`, `descrição`) VALUES ('4', '6', '2', '3', 'setor oeste qd 1 casa 37');
+INSERT INTO `03_dump`.`pedido` (`idpedido`, `idremédio`, `idfarmaceutico`, `idfarmacia`, `descrição`) VALUES ('5', '2', '3', '2', 'setor sul qd 8 casa 4');
+INSERT INTO `03_dump`.`pedido` (`descrição`) VALUES ('');
+
+
+INSERT INTO `03_dump`.`motoboy` (`idmotoboy`, `idpedido`, `idcliente`, `nome`, `telefone`) VALUES ('1', '4', '3', 'rafael', '72829181');
+INSERT INTO `03_dump`.`motoboy` (`idmotoboy`, `idpedido`, `idcliente`, `nome`, `telefone`) VALUES ('2', '3', '6', 'charlie', '78938271');
+INSERT INTO `03_dump`.`motoboy` (`idmotoboy`, `idpedido`, `idcliente`, `nome`, `telefone`) VALUES ('3', '1', '2', 'jaiden', '78935262');
+INSERT INTO `03_dump`.`motoboy` (`idmotoboy`, `idpedido`, `idcliente`, `nome`, `telefone`) VALUES ('4', '5', '4', 'pedro', '73825162');
+INSERT INTO `03_dump`.`motoboy` (`idmotoboy`, `idpedido`, `idcliente`, `nome`, `telefone`) VALUES ('5', '2', '5', 'juliana', '72845674');
+

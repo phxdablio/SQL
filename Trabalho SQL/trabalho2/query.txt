@@ -1,0 +1,20 @@
+//nome clientes
+SELECT nome FROM teste_empresa.cliente;
+
+//cor casas
+SELECT cor FROM teste_empresa.casa AS casa
+INNER JOIN teste_empresa.cliente AS cliente
+ON casa.idcliente = cliente.idcliente
+WHERE cliente.idcliente;
+
+//bairros 
+SELECT bairro.nomebairro AS nome_bairro FROM teste_empresa.casa  
+INNER JOIN teste_empresa.bairro AS bairro
+ON casa.idbairro = bairro.idbairro
+WHERE bairro.idbairro;
+
+//carros dos clientes
+SELECT modelo AS carro FROM teste_empresa.carro
+INNER JOIN teste_empresa.cliente AS cliente 
+ON carro.idcliente = cliente.idcliente
+WHERE cliente.idcliente;
